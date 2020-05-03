@@ -25,7 +25,7 @@ def save_values(agent, env):
             
 #%%
 def main():
-    env = Environment(default=5)
+    env = Environment(default=None)
     agent = QAgent(env) 
     
     total_reward = []

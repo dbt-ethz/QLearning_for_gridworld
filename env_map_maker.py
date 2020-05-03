@@ -5,7 +5,7 @@ import numpy as np
 def index_from_xy(x, y, nX, nY):
     return x+y*nX;
 
-def define_environment_map(n_rows=5, n_cols=5, inner_wall_coords=[[2,1],[2,2],[3,2],[4,2]], 
+def define_environment_map(n_rows=5, n_cols=5, inner_wall_coords=[[1,2],[2,2],[2,3],[2,4]], 
                  startX=3, startY=4, goalX=1, goalY=3):
     bool_2D_np_array = np.zeros((n_rows, n_cols),dtype=bool)
     for coord in inner_wall_coords:
