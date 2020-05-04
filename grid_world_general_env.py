@@ -84,7 +84,7 @@ def main():
     n_episodes = 10
     state = env.reset()
     for i in range(n_episodes):
-        action = agent.get_action(state)
+        action = agent.get_random_action(state)
         next_state, reward, done, info = env.step(action)
         experience = (state, action, next_state, reward, done)
         experience_list = list(experience)

@@ -24,13 +24,9 @@ def save_values(agent, env):
             V[i][j] = np.max(Q[i,j,:])
             
 #%%
-def main():
-    env = Environment(default=None)
-    agent = QAgent(env) 
-    
+def train(env, agent, n_episodes=2400, render=False, saveQ=False):
     total_reward = []
     view_freq = 500
-    n_episodes = 2400
     obs_history = {ep:[] for ep in range(n_episodes)}
     for ep in range(n_episodes):
         if ep % view_freq == 0:
@@ -54,7 +50,9 @@ def main():
             #         experience_list[1] = str_a
             # print('Experience: ', experience_list)
             
-            # env.render()
+            if render:
+                env.render()
+                
             state = next_state
             
             if done:
@@ -65,14 +63,15 @@ def main():
                 break
         total_reward.append(np.sum(episode_reward))
     ###
-    saving = True
-    if saving:
+    if saveQ:
         save_values(agent, env)
-    return agent, env, obs_history
+    return agent.q_table, total_reward, obs_history
 
 #%%
 if __name__ == '__main__':
-    agent, env, obs_history = main()
+    env = Environment(default=5)
+    agent = QAgent(env)
+    agent, env, obs_history = train(env, agent, n_episodes=2400, render=False)
     plot_obs_history(env, obs_history)
     
         

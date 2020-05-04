@@ -16,7 +16,7 @@ class Random_Agent():
         self.action_size = self.env.action_space.n
         self.state_size = self.env.observation_space.n
         
-    def get_action(self, state):
+    def get_random_action(self, state):
         action = random.choice(range(self.action_size))
         return action
     

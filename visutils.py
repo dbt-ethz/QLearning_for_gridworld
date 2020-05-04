@@ -30,6 +30,7 @@ def plot_obs_history(env, obs_history):
     chessboard = np.zeros((env.height, env.width))
     counter = 0
     fig, ax = plt.subplots(figsize=(15,10))
+    fig.suptitle(f"Agent performance in some episodes of the training phase")
     rect_w = 1
     rect_h = 1
     rect_shift_x = 0
@@ -75,4 +76,5 @@ def plot_reward(total_reward):
     plt.xlabel('Episode')
     # plt.ylabel('Moving Average Reward')
     plt.ylabel('Total Reward per Episode')
+    plt.title(f"Agent performance the training phase")
     plt.show()

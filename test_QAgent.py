@@ -12,10 +12,7 @@ from agents import QAgent
 from grid_world_general_env import Environment
 
 #%%
-def main():
-    env = Environment(default=5)
-    agent = QAgent(env) 
-    q_table = np.load('q_table.npy')
+def test(env, agent, n_episodes=2, render=True):
     total_reward = []
     n_episodes = 2
     for ep in range(n_episodes):
@@ -27,14 +24,15 @@ def main():
         t = 0
         while not done:
             t += 1
-            action = np.argmax(q_table[state])
+            action = np.argmax(agent.q_table[state])
             next_state, reward, done, info = env.step(action)
             experience = (state, action, next_state, reward, done)
             # print('Experience: ', experience)
             episode_reward.append(reward)
             
-            agent.train(experience)
-            env.render()
+            if render:
+                env.render()
+                
             state = next_state
             
             if done:
@@ -45,4 +43,7 @@ def main():
 
 #%%
 if __name__ == '__main__':
-    main()
+    env = Environment(default=5)
+    agent = QAgent(env)
+    agent.q_table = np.load('q_table.npy')
+    test(env, agent, n_episodes=2, render=True)
