@@ -10,14 +10,10 @@ import numpy as np
 import pandas as pd
 from env_map_maker import define_environment_map
 
-from plot_environment import PlotEnvironment
-
 #%%
 class MdpMetaData:
-    def __init__(self, default=None, n_rows=5, n_cols=5, 
-                 inner_wall_coords=[[1,2],[2,2],[2,3],[2,4]], 
-                 startX=3, startY=4, goalX=1, goalY=3):
-        
+    def __init__(self, maze_dict, default=None):
+    
         self.default = default
         if default == 5:
             self.n_rows = 5
@@ -31,6 +27,16 @@ class MdpMetaData:
             self.left_forbidden = [8]
             self.inner_wall = [7, 12, 13, 14]
             
+            self.env_dict = {'n_rows': self.n_rows,
+                             'n_cols': self.n_cols,
+                             'inner_wall': self.inner_wall,
+                             'up_forbidden': self.up_forbidden,
+                             'down_forbidden': self.down_forbidden,
+                             'left_forbidden': self.left_forbidden,
+                             'right_forbidden': self.right_forbidden,
+                             'start_state': self.start_state,
+                             'goal_state': self.goal_state}
+            
         elif default == 10:
             self.n_rows = 10
             self.n_cols = 10
@@ -42,22 +48,40 @@ class MdpMetaData:
             self.down_forbidden = [14, 15, 16, 32, 33, 37, 38, 55, 61]
             self.left_forbidden = [27, 35, 45, 49, 53, 63, 66, 72, 76, 86, 96]
             self.inner_wall = [24, 25, 26, 34, 42, 43, 44, 47, 48, 52, 62, 65, 71, 75, 85, 95]
+            
+            self.env_dict = {'n_rows': self.n_rows,
+                             'n_cols': self.n_cols,
+                             'inner_wall': self.inner_wall,
+                             'up_forbidden': self.up_forbidden,
+                             'down_forbidden': self.down_forbidden,
+                             'left_forbidden': self.left_forbidden,
+                             'right_forbidden': self.right_forbidden,
+                             'start_state': self.start_state,
+                             'goal_state': self.goal_state}
         
         else:
-            self.n_rows = n_rows
-            self.n_cols = n_cols
-            inner_wall_coords_ = []
-            for x,y in inner_wall_coords:
-                inner_wall_coords_.append([y,x])
-            self.inner_wall, self.up_forbidden, self.down_forbidden, self.left_forbidden, \
-                self.right_forbidden, self.start_state, self.goal_state = define_environment_map(n_rows, n_cols, inner_wall_coords_, 
-                                                                                              startX, startY, goalX, goalY)
+            self.n_rows = maze_dict['n_rows']
+            self.n_cols = maze_dict['n_cols']
+            inner_wall_coords = []
+            inner_wall_coords_ = maze_dict['inner_wall_coords']
+            for x,y in inner_wall_coords_:
+                inner_wall_coords.append([y,x])
+            maze_dict['inner_wall_coords'] = inner_wall_coords
+            self.env_dict = define_environment_map(maze_dict)
+            
+            self.env_dict['n_rows'] = maze_dict['n_rows']
+            self.env_dict['n_cols'] = maze_dict['n_cols']
+            self.inner_wall = self.env_dict['inner_wall']
+            self.up_forbidden = self.env_dict['up_forbidden']
+            self.down_forbidden = self.env_dict['down_forbidden']
+            self.left_forbidden = self.env_dict['left_forbidden']
+            self.right_forbidden = self.env_dict['right_forbidden']
+            self.start_state = self.env_dict['start_state']
+            self.goal_state = self.env_dict['goal_state']
         
         self.actions = {'U': 0, 'R': 1, 'D': 2, 'L': 3}
         self.num_states = self.n_rows*self.n_cols
         self.num_actions = len(self.actions)
-        
-        self.view = PlotEnvironment(self.n_rows, self.n_cols, self.start_state, self.goal_state, self.inner_wall)
         
     def get_action_key(self, action):
         for key, value in self.actions.items(): 
@@ -135,10 +159,15 @@ class MdpMetaData:
     
 #%% 
 def main():
-    self1 = MdpMetaData()
+    ### For the default 5*5 maze
+    maze_dict = {'n_rows':5, 'n_cols':5, 
+                 'inner_wall_coords':[[1,2],[2,2],[2,3],[2,4]], 
+                 'startRow':3, 'startCol':4, 
+                 'goalRow':1, 'goalCol':3}
+    self1 = MdpMetaData(maze_dict)
     T, R, P = self1.make_mdp()
-    self1.view.show_image()
+    return self1
 
 #%% 
 if __name__ == '__main__':
-    main()    
+    self1 = main()    

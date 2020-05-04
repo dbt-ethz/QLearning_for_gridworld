@@ -9,7 +9,7 @@ Created on Thu Mar  5 19:07:27 2020
 import numpy as np
 
 from agents import QAgent
-from grid_world_general_env import Environment
+from gridworld_environment import Environment
 from visutils import plot_obs_history
 
 #%%
@@ -71,7 +71,7 @@ def train(env, agent, n_episodes=2400, render=False, saveQ=False):
 if __name__ == '__main__':
     env = Environment(default=5)
     agent = QAgent(env)
-    agent, env, obs_history = train(env, agent, n_episodes=2400, render=False)
+    agent.q_table, total_reward, obs_history = train(env, agent, n_episodes=2400, render=False)
     plot_obs_history(env, obs_history)
     
         

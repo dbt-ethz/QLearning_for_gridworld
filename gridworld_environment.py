@@ -17,15 +17,12 @@ from plot_environment import PlotEnvironment
 class Environment(Env):
     """Custom Environment that follows gym interface"""
     metadata = {'render.modes': ['human']}
-    def __init__(self, default=None, n_rows=5, n_cols=5, 
-                 inner_wall_coords=[[1,2],[2,2],[2,3],[2,4]], 
-                 startX=3, startY=4, goalX=1, goalY=3):
+    def __init__(self, maze_dict=None, default=None):
         self.default = default
-        self.mdp_metadate = MdpMetaData(default, n_rows, n_cols, inner_wall_coords, 
-                                        startX, startY, goalX, goalY)
-        
-        self.height = self.mdp_metadate.n_rows
-        self.width = self.mdp_metadate.n_cols
+        self.mdp_metadate = MdpMetaData(maze_dict, default)
+        self.env_dict = self.mdp_metadate.env_dict
+        self.n_rows = self.mdp_metadate.n_rows
+        self.n_cols = self.mdp_metadate.n_cols
 
         self.action_space = spaces.Discrete(self.mdp_metadate.num_actions)
         self.observation_space = spaces.Discrete(self.mdp_metadate.num_states)
@@ -40,9 +37,7 @@ class Environment(Env):
 
         self.S = self.mdp_metadate.goal_state
         
-        self.view = PlotEnvironment(self.mdp_metadate.n_rows, self.mdp_metadate.n_cols, 
-                                    self.start_state, self.goal_state, self.mdp_metadate.inner_wall)
-        
+        self.view = PlotEnvironment(self.env_dict)
         self.seed()
         self.reset()
     

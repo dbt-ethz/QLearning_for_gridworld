@@ -5,15 +5,25 @@ Created on Mon May  4 06:31:30 2020
 @author: RezaKakooee
 """
 #%%
-from grid_world_general_env import Environment
+from gridworld_environment import Environment
+from plot_environment import PlotEnvironment
 from agents import QAgent
 from train_QAgent import train
 from test_QAgent import test
 import visutils
 
 #%% Instantiate the Environment class
-## There are two pre-defined puzzles inside the MdpMetaData class: a 5*5 and a 10*10 maze. Here we instantiate the Environment class with a 5*5 maze
-env = Environment(default=5)
+maze_dict = {'n_rows':8, 'n_cols':8, 
+            'inner_wall_coords':[[1,2],[1,3],[1,4],[1,5],[2,2],[3,2],[3,3],[3,4],[3,5],[5,2],[5,3],[5,4],[6,4], [7,2],[7,3],[7,4]], 
+            'startRow':6, 'startCol':3, 
+            'goalRow':2, 'goalCol':3}
+
+## You can use deafual 5*5 or 10*10 mazez, or instantiate the Environment class with an arbitrary maze
+### for deafutl
+# env = Environment(default=10)
+### for an arbitrary maze
+env = Environment(maze_dict, default=None)
+PlotEnvironment(env.env_dict).show_image()
 
 #%% Instantiate the agent
 agent = QAgent(env) 

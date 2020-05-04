@@ -13,16 +13,14 @@ import matplotlib.patches as patches
 
 #%%
 class PlotEnvironment:
-    def __init__(self, n_rows=5, n_cols=5, 
-                 start_state=19, goal_state=8,
-                 inner_wall = [7, 12, 13, 14]):
+    def __init__(self, env_dict):
         
-        self.n_rows = n_rows
-        self.n_cols = n_cols
+        self.n_rows = env_dict['n_rows']
+        self.n_cols = env_dict['n_cols']
         self.bsize = self.n_rows * self.n_cols
-        self.start_state = start_state
-        self.goal_state = goal_state
-        self.inner_wall = inner_wall
+        self.start_state = env_dict['start_state']
+        self.goal_state = env_dict['goal_state']
+        self.inner_wall = env_dict['inner_wall']
         self.n_blocked_cells = len(self.inner_wall)
         self.EVEN_COLOR = '#FF4500' #'#FF7F50'
         self.ODD_COLOR = '#FF4500' 
@@ -32,7 +30,7 @@ class PlotEnvironment:
         self.rect_shift_y = 0
         
         self.chessboard = np.zeros((self.n_cols, self.n_cols))
-        self.cartesian_mat =np.flip(np.arange(self.bsize).reshape(n_cols,n_rows),axis=0)
+        self.cartesian_mat = np.flip(np.arange(self.bsize).reshape(self.n_cols, self.n_rows), axis=0)
         
         self.convert_table_potision_to_cartesian_position()
         
@@ -94,7 +92,6 @@ class PlotEnvironment:
     def plot_map(self, cur_state, new_state):
         if self.frame_counter == 0:
             plt.ion()
-            print(self.n_rows)
             if self.n_rows == 5:
                 self.fig, self.ax = plt.subplots(figsize=(5,5))
             else:

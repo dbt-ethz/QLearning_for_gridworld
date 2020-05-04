@@ -15,7 +15,7 @@ from plot_environment import PlotEnvironment
 def plot_obs_history(env, obs_history):
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
-    view = PlotEnvironment(env.height, env.width, env.start_state, env.goal_state, env.inner_wall)
+    view = PlotEnvironment(env.env_dict)
     n_episodes = len(obs_history.keys())
     view_episodes = np.sort(np.random.choice(np.arange(0,n_episodes), size=24, replace=False))
     obs_history_x = {ep:[] for ep in view_episodes}
@@ -26,8 +26,8 @@ def plot_obs_history(env, obs_history):
             obs_history_yx[ep] = [view.tp2cl(s) for s in obs_history[ep]]
             obs_history_y[ep] = [coords[0] for coords in obs_history_yx[ep]]
             obs_history_x[ep] = [coords[0] for coords in obs_history_yx[ep]]
-    bsize = env.height * env.width
-    chessboard = np.zeros((env.height, env.width))
+    bsize = env.n_rows * env.n_cols
+    chessboard = np.zeros((env.n_rows, env.n_cols))
     counter = 0
     fig, ax = plt.subplots(figsize=(15,10))
     fig.suptitle(f"Agent performance in some episodes of the training phase")
@@ -40,8 +40,8 @@ def plot_obs_history(env, obs_history):
         ax = plt.subplot(4,6,counter)
         plt.xticks([])
         plt.yticks([])
-        plt.xlim(0, env.height)
-        plt.ylim(0, env.width)
+        plt.xlim(0, env.n_rows)
+        plt.ylim(0, env.n_cols)
         plt.title(f"Episode: {ep}")
         c = ax.pcolor(chessboard, edgecolors='k', linewidths=3, cmap='binary')
         

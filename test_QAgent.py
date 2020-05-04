@@ -9,7 +9,7 @@ Created on Mon Mar 16 03:01:18 2020
 import numpy as np
 
 from agents import QAgent
-from grid_world_general_env import Environment
+from gridworld_environment import Environment
 
 #%%
 def test(env, agent, n_episodes=2, render=True):
