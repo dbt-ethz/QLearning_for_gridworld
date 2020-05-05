@@ -12,7 +12,7 @@ from env_map_maker import define_environment_map
 
 #%%
 class MdpMetaData:
-    def __init__(self, maze_dict, default=None):
+    def __init__(self, maze_dict, default=5):
     
         self.default = default
         if default == 5:

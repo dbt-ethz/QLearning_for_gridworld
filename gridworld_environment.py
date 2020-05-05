@@ -6,15 +6,13 @@ Created on Mon Mar 23 21:58:47 2020
 """
 
 #%%
-from gym import spaces
-from gym.core import Env
-from gym.utils import seeding
+import gym
 
 from mdp_meta_data import MdpMetaData
 from plot_environment import PlotEnvironment
 
 #%%
-class Environment(Env):
+class Environment(gym.core.Env):
     """Custom Environment that follows gym interface"""
     metadata = {'render.modes': ['human']}
     def __init__(self, maze_dict=None, default=None):
@@ -24,8 +22,8 @@ class Environment(Env):
         self.n_rows = self.mdp_metadate.n_rows
         self.n_cols = self.mdp_metadate.n_cols
 
-        self.action_space = spaces.Discrete(self.mdp_metadate.num_actions)
-        self.observation_space = spaces.Discrete(self.mdp_metadate.num_states)
+        self.action_space = gym.spaces.Discrete(self.mdp_metadate.num_actions)
+        self.observation_space = gym.spaces.Discrete(self.mdp_metadate.num_states)
         self.actions = self.mdp_metadate.actions
         
         self.start_state = self.mdp_metadate.start_state
@@ -47,7 +45,7 @@ class Environment(Env):
         return self.S
     
     def seed(self, seed=None):
-        self.np_random, seed = seeding.np_random(seed)
+        self.np_random, seed = gym.utils.seeding.np_random(seed)
         return [seed]
     
     def move(self, action):
